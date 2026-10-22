@@ -2,7 +2,7 @@
 
 Angehende Software-Entwicklerin (FIAE) & angehende Game-Developerin (BIB College 2027) mit Fokus auf C++, Java, Python und Software-Architektur.
 
-**Live Portfolio:** [emilyfricke729-tech.github.io](https://emilyfricke729-tech.github.io)
+**Live Portfolio:** [https://emilyfricke729-tech.github.io](https://emilyfricke729-tech.github.io)
 
 ---
 
