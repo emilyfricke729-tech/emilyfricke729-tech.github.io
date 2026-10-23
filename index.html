@@ -407,6 +407,56 @@ nav.scrolled { border-color: var(--subtle); }
 .proj-card:hover { box-shadow: 0 6px 24px rgba(0,0,0,.07); }
 .proj-card:hover::after { transform: scaleX(1); }
 
+/* === @F === */
+/* ── CODE HOVER OVERLAY ── */
+.proj-card.has-code {
+  cursor: pointer;
+}
+.proj-card .code-overlay {
+  position: absolute;
+  inset: 0;
+  background: var(--ink);
+  border-radius: 8px;
+  padding: 20px 22px;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(6px);
+  transition: opacity .28s ease, transform .28s ease;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow: hidden;
+}
+.proj-card.has-code:hover .code-overlay {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+.code-overlay-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .6rem; letter-spacing: .14em; text-transform: uppercase;
+  color: #555;
+}
+.code-overlay pre {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .72rem; line-height: 1.7;
+  color: #888; white-space: pre; overflow: hidden;
+  flex: 1; margin: 0;
+}
+.code-overlay pre .kw  { color: #c792ea; }
+.code-overlay pre .fn  { color: #82aaff; }
+.code-overlay pre .str { color: #c3e88d; }
+.code-overlay pre .cm  { color: #546e7a; font-style: italic; }
+.code-overlay pre .num { color: #f78c6c; }
+.code-overlay pre .cls { color: #ffcb6b; }
+.code-overlay pre .tc  { color: var(--amber2); }
+.code-overlay-hint {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .62rem; color: #333; letter-spacing: .06em;
+  text-align: right; margin-top: auto;
+}
+
 .pc-label {
   font-family: 'JetBrains Mono', monospace;
   font-size: .65rem; letter-spacing: .12em; text-transform: uppercase;
@@ -586,6 +636,10 @@ footer {
   .hero-name { font-size: 3.2rem; }
   .container, .nav-wrap, .footer-wrap { padding: 0 20px; }
   .hero-wrap { padding: 60px 20px; }
+  .hero-name .last {
+    -webkit-text-stroke: 1px var(--ink);
+    letter-spacing: -.02em;
+  }
 }
 </style>
 </head>
@@ -857,25 +911,127 @@ footer {
 
     <!-- 3-col grid -->
     <div class="proj-grid" style="margin-top: 12px;">
-      <article class="proj-card pi reveal" data-cat="java">
+      <article class="proj-card has-code pi reveal" data-cat="java">
         <div class="pc-label">Java · Security</div>
         <h3>🛡️ Dual-Perspective Security Simulator</h3>
         <p>SOC Analyst &amp; Red Team Simulatoren mit Multi-Threading für Echtzeit-Countdown-Timer, ANSI-Farbcodes und dynamischer Schwierigkeit.</p>
         <div class="chip-row"><span class="chip">Java</span><span class="chip">Threads</span><span class="chip">OOP</span></div>
+        <div class="code-overlay">
+          <div class="code-overlay-label">SecuritySim.java — Auszug</div>
+<pre><span class="cm">// Echtzeit-Countdown im Hintergrund</span>
+<span class="cls">Thread</span> t = <span class="kw">new</span> <span class="cls">Thread</span>(() -> {
+  <span class="kw">while</span> (remaining > <span class="num">0</span>) {
+    <span class="cls">System</span>.out.<span class="fn">print</span>(
+      <span class="str">"\r⏳ "</span> + remaining + <span class="str">"s  "</span>
+    );
+    remaining--;
+    <span class="cls">Thread</span>.<span class="fn">sleep</span>(<span class="num">1000</span>);
+  }
+});
+t.<span class="fn">setDaemon</span>(<span class="kw">true</span>);
+t.<span class="fn">start</span>();</pre>
+          <div class="code-overlay-hint">hover to peek ↑</div>
+        </div>
       </article>
 
-      <article class="proj-card pi reveal" data-cat="python" style="transition-delay:.08s">
+      <article class="proj-card has-code pi reveal" data-cat="python" style="transition-delay:.08s">
         <div class="pc-label">Python · Architecture</div>
         <h3>📜 Modular Logging &amp; Integrity Architecture</h3>
         <p>Systemmodul für Ressourcen-Integritätsprüfungen, Dual-Channel-Logging in Datei und Konsole, robuste Exception-Behandlung.</p>
         <div class="chip-row"><span class="chip">Python 3</span><span class="chip">Logging</span><span class="chip">File-I/O</span></div>
+        <div class="code-overlay">
+          <div class="code-overlay-label">logger.py — Auszug</div>
+<pre><span class="cm"># Dual-Channel: Datei + Konsole</span>
+<span class="kw">def</span> <span class="fn">setup_logger</span>(name):
+  logger = logging.<span class="fn">getLogger</span>(name)
+  logger.setLevel(logging.<span class="cls">DEBUG</span>)
+
+  fh = logging.<span class="cls">FileHandler</span>(<span class="str">"run.log"</span>)
+  ch = logging.<span class="cls">StreamHandler</span>()
+
+  fmt = logging.<span class="cls">Formatter</span>(
+    <span class="str">"%(asctime)s [%(levelname)s] %(message)s"</span>
+  )
+  fh.<span class="fn">setFormatter</span>(fmt)
+  ch.<span class="fn">setFormatter</span>(fmt)
+  logger.<span class="fn">addHandler</span>(fh)
+  logger.<span class="fn">addHandler</span>(ch)
+  <span class="kw">return</span> logger</pre>
+          <div class="code-overlay-hint">hover to peek ↑</div>
+        </div>
       </article>
 
-      <article class="proj-card pi reveal" data-cat="web" style="transition-delay:.24s">
+      <article class="proj-card has-code pi reveal" data-cat="web" style="transition-delay:.24s">
         <div class="pc-label">Frontend · Web</div>
         <h3>❤️ Valentine's Surprise</h3>
         <p>Interaktive Single-Page-Webanwendung mit dynamischer DOM-Manipulation, asynchronen Timern und CSS3-Animationen.</p>
         <div class="chip-row"><span class="chip">HTML5</span><span class="chip">CSS3</span><span class="chip">JavaScript</span></div>
+        <div class="code-overlay">
+          <div class="code-overlay-label">valentine.js — Auszug</div>
+<pre><span class="cm">// Herz-Regen mit zufälliger Position</span>
+<span class="kw">function</span> <span class="fn">spawnHeart</span>() {
+  <span class="kw">const</span> el = document.<span class="fn">createElement</span>(<span class="str">'div'</span>);
+  el.textContent = <span class="str">'❤️'</span>;
+  el.style.left = <span class="cls">Math</span>.<span class="fn">random</span>() * <span class="num">100</span> + <span class="str">'vw'</span>;
+  el.style.animationDuration =
+    (<span class="cls">Math</span>.<span class="fn">random</span>() * <span class="num">2</span> + <span class="num">1</span>) + <span class="str">'s'</span>;
+  document.body.<span class="fn">appendChild</span>(el);
+  <span class="fn">setTimeout</span>(() => el.<span class="fn">remove</span>(), <span class="num">3000</span>);
+}
+<span class="fn">setInterval</span>(spawnHeart, <span class="num">300</span>);</pre>
+          <div class="code-overlay-hint">hover to peek ↑</div>
+        </div>
+      </article>
+
+      <article class="proj-card has-code pi reveal" data-cat="web" style="transition-delay:.32s">
+        <div class="pc-label">Frontend · Web · Animation</div>
+        <h3>🌺 Hibiskus — CSS Animation</h3>
+        <p>Botanische Blütenanimation in reinem HTML/CSS — fünf Blütenblätter mit individuellem Farbverlauf, Bloom-Keyframe-Animation und sanftem Sway-Effekt. Kein JavaScript, kein Canvas.</p>
+        <div class="chip-row"><span class="chip">HTML5</span><span class="chip">CSS3</span><span class="chip">Keyframes</span><span class="chip">Radial Gradient</span></div>
+        <div class="code-overlay">
+          <div class="code-overlay-label">Hibiskus.html — Auszug</div>
+<pre><span class="cm">/* Bloom-Animation pro Blütenblatt */</span>
+<span class="fn">@keyframes</span> bloom {
+  from {
+    opacity: <span class="num">0</span>;
+    transform: <span class="fn">rotate</span>(<span class="kw">var</span>(--r)) <span class="fn">scale</span>(<span class="num">0.2</span>);
+  }
+  <span class="num">60</span>% { opacity: <span class="num">0.85</span>; }
+  to   { opacity: <span class="num">1</span>; transform: <span class="fn">rotate</span>(<span class="kw">var</span>(--r)) <span class="fn">scale</span>(<span class="num">1</span>); }
+}
+
+<span class="cm">/* Sanftes Wiegen der ganzen Blüte */</span>
+<span class="fn">@keyframes</span> sway {
+  <span class="num">0</span>%, <span class="num">100</span>% { transform: <span class="fn">rotate</span>(<span class="num">-1.5deg</span>); }
+  <span class="num">50</span>%        { transform: <span class="fn">rotate</span>(<span class="num">1.5deg</span>); }
+}</pre>
+          <div class="code-overlay-hint">hover to peek ↑</div>
+        </div>
+      </article>
+
+      <article class="proj-card has-code pi reveal" data-cat="python" style="transition-delay:.40s">
+        <div class="pc-label">Python · GUI · Graphics</div>
+        <h3>🌸 Hibiskus — Python Desktop</h3>
+        <p>Botanische Blütenillustration als native Desktop-App mit tkinter. Vektorgrafik-Rendering via Canvas, mathematisch berechnete Blütenblatt-Profile mit Bézierkurven-Approximation und Farbverlaufs-Interpolation.</p>
+        <div class="chip-row"><span class="chip">Python 3</span><span class="chip">tkinter</span><span class="chip">Canvas</span><span class="chip">math</span></div>
+        <div class="code-overlay">
+          <div class="code-overlay-label">hibiskus.py — Auszug</div>
+<pre><span class="cm"># Farbverlauf zwischen zwei Hex-Farben</span>
+<span class="kw">def</span> <span class="fn">lerp_color</span>(c1, c2, t):
+    r1, g1, b1 = <span class="fn">int</span>(c1[<span class="num">1</span>:<span class="num">3</span>], <span class="num">16</span>), ...
+    r = <span class="fn">int</span>(r1 + (r2 - r1) * t)
+    g = <span class="fn">int</span>(g1 + (g2 - g1) * t)
+    b = <span class="fn">int</span>(b1 + (b2 - b1) * t)
+    <span class="kw">return</span> <span class="str">f"#{r:02x}{g:02x}{b:02x}"</span>
+
+<span class="cm"># Blütenblatt-Profil: breit in Mitte, spitz zur Spitze</span>
+<span class="kw">def</span> <span class="fn">profile</span>(t):
+    <span class="kw">if</span> t &lt; <span class="num">0.35</span>:
+        <span class="kw">return</span> (t / <span class="num">0.35</span>) * (width / <span class="num">2</span>)
+    <span class="kw">else</span>:
+        <span class="kw">return</span> (<span class="num">1</span> - t) / <span class="num">0.65</span> * ...</pre>
+          <div class="code-overlay-hint">hover to peek ↑</div>
+        </div>
       </article>
     </div>
   </div>
@@ -1061,7 +1217,7 @@ const CMDS = {
   help:     () => `<span style="color:var(--amber2)">skills · projects · cv · contact · whoami · clear</span>`,
   whoami:   () => `Emily Fricke — angehende FIAE\nGeboren 11.03.2011 · Weener, Niedersachsen`,
   skills:   () => `C++  Java  Python  HTML/CSS/JS\nSFML  OOP  Multi-Threading  Git`,
-  projects: () => `1. Sucht &amp; Schicksal   — C++ / SFML / Python\n2. Security Simulator  — Java\n3. Logging Module      — Python\n4. Valentine's         — HTML/CSS/JS`,
+  projects: () => `1. Sucht &amp; Schicksal   — C++ / SFML / Python\n2. Security Simulator  — Java\n3. Logging Module      — Python\n4. Valentine's         — HTML/CSS/JS\n5. Hibiskus CSS        — HTML/CSS\n6. Hibiskus Desktop    — Python / tkinter`,
   cv:       () => `Bildung:  Oberschule Weener (Abschluss 07/2027)\nPraktika: BBC Chartering · ABW Weener\nEhrenamt: Jugendfeuerwehr Weener\nSprachen: Deutsch · Englisch`,
   contact:  () => `<span style="color:var(--amber2)">Frickeemily347@gmail.com</span>`,
   clear:    null,
